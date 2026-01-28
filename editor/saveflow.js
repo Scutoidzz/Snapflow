@@ -149,7 +149,6 @@ class SnapflowSaver {
      * Convert a block type/label to a snapf block representation
      */
     blockToSnapf(type, label, indent = '') {
-        // Map block types to snapf block formats
         const blockMappings = {
             'trigger': {
                 'Trigger 1': '<block startup>\n</block startup>',
@@ -158,7 +157,7 @@ class SnapflowSaver {
             },
             'action': {
                 'Action 1': '<block terminal>\n    <command></command>\n</block terminal>',
-                'Action 2': '<block notification>\n    <message></message>\n</block notification>',
+                'Connect to AI': '<block AI>\n    <prompt></prompt>\n    <model></model>\n    <api_key></api_key>\n</block AI>',
                 'Action 3': '<block http>\n    <url></url>\n    <method>GET</method>\n</block http>'
             }
         };

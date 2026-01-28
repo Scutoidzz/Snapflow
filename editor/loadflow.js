@@ -156,7 +156,6 @@ class SnapflowLoader {
 
         // Clear existing content
         dragboard.innerHTML = '';
-        // Add SVG layer (snapflw.js drawConnections will need it, but we can add it here to be safe)
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.id = 'connections-layer';
         Object.assign(svg.style, {
@@ -279,9 +278,6 @@ class SnapflowLoader {
 // Global instance
 const snapflowLoader = new SnapflowLoader();
 
-/**
- * Open file picker and load a .snapf file
- */
 function loadFlowFromSNAPF() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -303,23 +299,14 @@ function loadFlowFromSNAPF() {
     input.click();
 }
 
-/**
- * Load from text content directly
- */
 function loadFlowFromContent(content) {
     return snapflowLoader.loadFromContent(content);
 }
 
-/**
- * Parse content without restoring (for inspection)
- */
 function parseSnapf(content) {
     return snapflowLoader.parse(content);
 }
 
-/**
- * Export for ES modules if needed
- */
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { SnapflowLoader, loadFlowFromSNAPF, loadFlowFromContent, parseSnapf };
 }
