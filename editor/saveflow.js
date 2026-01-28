@@ -18,16 +18,12 @@ class SnapflowSaver {
                 this.authorName = name.trim();
                 localStorage.setItem('snapflow_author', this.authorName);
             } else {
-                this.authorName = "Anonymous";
+                this.authorName = "Unknown";
             }
         }
         return this.authorName;
     }
 
-    /**
-     * Collect all blocks and groups from the dragboard
-     * Reconstructs flows based on window.snapflowConnections
-     */
     collectBlocks() {
         const dragboard = document.getElementById('dragboard');
         if (!dragboard) return [];
@@ -151,14 +147,14 @@ class SnapflowSaver {
     blockToSnapf(type, label, indent = '') {
         const blockMappings = {
             'trigger': {
-                'Trigger 1': '<block startup>\n</block startup>',
-                'Trigger 2': '<block schedule>\n    <cron>* * * * *</cron>\n</block schedule>',
-                'Trigger 3': '<block webhook>\n    <endpoint>/hook</endpoint>\n</block webhook>'
+                'Time': '<block startup>\n</block startup>',
+                'File': '<block file>\n    <if></if>\n<crud></crud>\n</block file>',
+                'Battery': '<block battery>\n    <at></at>\n</block battery>'
             },
             'action': {
-                'Action 1': '<block terminal>\n    <command></command>\n</block terminal>',
+                'Send Notification': '<block notify>\n    <text></text>\n</block notify>',
                 'Connect to AI': '<block AI>\n    <prompt></prompt>\n    <model></model>\n    <api_key></api_key>\n</block AI>',
-                'Action 3': '<block http>\n    <url></url>\n    <method>GET</method>\n</block http>'
+                'Custom API': '<block http>\n    <url></url>\n    <method>GET</method>\n    <api_key></api_key>\n</block http>'
             }
         };
 
@@ -188,7 +184,7 @@ class SnapflowSaver {
         content += '- Snapflow\n';
         content += `- Author - ${author}\n`;
         content += `- Name - ${flowName}\n`;
-        content += `- Created - ${new Date().toISOString()}\n`;
+        content += `- Created - ${new Date().toDateString()}\n`;
         content += '\n';
 
         // Process blocks
@@ -218,9 +214,12 @@ class SnapflowSaver {
     /**
      * Save to file (triggers download)
      */
-    saveToFile(filename = 'snapfile.snapf') {
+    saveToFile(filename = `${flowName}.snapf`) {
         const flowName = prompt('Enter a name for this flow:', 'My Flow') || 'Untitled Flow';
         const content = this.generateSnapf(flowName);
+
+        // Save to browser history (localStorage)
+        this.saveToHistory(flowName, content);
 
         // Create blob and download
         const blob = new Blob([content], { type: 'text/plain' });
@@ -236,6 +235,32 @@ class SnapflowSaver {
 
         console.log('Saved to:', filename);
         return content;
+    }
+
+    /**
+     * Save flow metadata to LocalStorage history
+     */
+    saveToHistory(name, content) {
+        try {
+            const history = JSON.parse(localStorage.getItem('recent_snapflows') || '[]');
+
+            // Add new entry
+            const entry = {
+                name: name,
+                date: new Date().toISOString(),
+                content: content
+            };
+
+            // Unshift to beginning
+            history.unshift(entry);
+
+            // Keep max 20
+            if (history.length > 20) history.pop();
+
+            localStorage.setItem('recent_snapflows', JSON.stringify(history));
+        } catch (e) {
+            console.error('Failed to save history', e);
+        }
     }
 
     /**

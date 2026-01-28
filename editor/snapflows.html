@@ -20,9 +20,65 @@
         <neo-button variant="secondary" onclick="loadFlowFromSNAPF()">Import snapflow</neo-button>
         <neo-button variant="tertiary">Create block</neo-button>
     </div>
-    <div id="snapflows">
-
+    <div id="snapflows" class="section-grid">
+        <!-- Will be populated by JS -->
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('snapflows');
+            const history = JSON.parse(localStorage.getItem('recent_snapflows') || '[]');
+
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <neo-card style="grid-column: 1 / -1; text-align: center; opacity: 0.7;">
+                        <h3>No recent flows found.</h3>
+                        <p>Create a new one to get started!</p>
+                    </neo-card>
+                `;
+                return;
+            }
+
+            history.forEach((item, index) => {
+                const date = new Date(item.date).toLocaleDateString();
+                const card = document.createElement('neo-card');
+                card.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p style="color: #666; font-size: 0.9rem;">Last edited: ${date}</p>
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <neo-button variant="secondary" onclick="openFlow(${index})">Load</neo-button>
+                        <neo-button variant="primary" onclick="downloadFlow(${index})">Download</neo-button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        });
+
+        function openFlow(index) {
+            const history = JSON.parse(localStorage.getItem('recent_snapflows') || '[]');
+            const item = history[index];
+            if (item) {
+                // Save to temporary storage for mainedit to load
+                localStorage.setItem('pending_load_flow', item.content);
+                window.location.href = 'mainedit.html';
+            }
+        }
+
+        function downloadFlow(index) {
+            const history = JSON.parse(localStorage.getItem('recent_snapflows') || '[]');
+            const item = history[index];
+            if (item) {
+                const blob = new Blob([item.content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = (item.name || 'flow').replace(/\s+/g, '_') + '.snapf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+    </script>
 </body>
 
 </html>

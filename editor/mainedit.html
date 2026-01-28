@@ -15,10 +15,6 @@
 
     <div class="editor-layout">
         <aside class="sidebar">
-            <div class="sidebar-header" style="flex-direction: column; gap: 1rem; align-items: flex-start;">
-                <h2>Blocks</h2>
-                <neo-segment options="Triggers, Actions"></neo-segment>
-            </div>
 
             <div style="padding: 4rem; border-bottom: var(--border-width) solid black;">
                 <div style="display: flex; gap: 0.5rem; flex-direction: column;">
@@ -28,12 +24,12 @@
             </div>
 
             <div class="sidebar-content">
-                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Trigger 1">Time
+                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Time">Time
                     Trigger
                 </neo-button>
-                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Trigger 2">File
+                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="File Creation">File
                     Created</neo-button>
-                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Trigger 3">Battery
+                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Battery Level">Battery
                 </neo-button>
                 <neo-button draggable="true" style="width: 100%;" data-type="action" variant="secondary"
                     data-label="Send Notification">Send Notification</neo-button>
@@ -77,8 +73,8 @@
             <pre id="preview-content"
                 style="background: #f5f5f5; padding: 1rem; border: 2px solid #ccc; overflow-x: auto; font-family: 'Space Grotesk', monospace; white-space: pre-wrap;"></pre>
             <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                <neo-button variant="primary" onclick="copyPreviewContent()">📋 Copy</neo-button>
-                <neo-button variant="secondary" onclick="saveFlowToSNAPF()">💾 Download</neo-button>
+                <neo-button variant="primary" onclick="copyPreviewContent()">Copy</neo-button>
+                <neo-button variant="secondary" onclick="saveFlowToSNAPF()">Download</neo-button>
             </div>
         </div>
     </div>
@@ -87,32 +83,6 @@
     <script src="saveflow.js"></script>
     <script src="loadflow.js"></script>
     <script src="customize.js"></script>
-    <script>
-        // Preview modal functions
-        function previewAndShowSnapf() {
-            const content = previewSnapf('Preview');
-            document.getElementById('preview-content').textContent = content;
-            document.getElementById('preview-modal').style.display = 'flex';
-        }
-
-        function closePreviewModal() {
-            document.getElementById('preview-modal').style.display = 'none';
-        }
-
-        function copyPreviewContent() {
-            const content = document.getElementById('preview-content').textContent;
-            navigator.clipboard.writeText(content).then(() => {
-                alert('Copied to clipboard!');
-            });
-        }
-
-        // Close modal on background click
-        document.getElementById('preview-modal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('preview-modal')) {
-                closePreviewModal();
-            }
-        });
-    </script>
 </body>
 
 </html>

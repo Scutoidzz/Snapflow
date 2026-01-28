@@ -13,7 +13,7 @@
 
 ## 🧩 Web Components (`components.js`)
 - [ ] **Toggle Switch**: Build a `<neo-toggle>` component for boolean settings.
-- [ ] **Dropdown Menu**: Create a custom `<neo-select>` with thick borders.
+- [x] **Dropdown Menu**: Create a custom `<neo-select>` with thick borders.
 - [ ] **Progress Bar**: Implement a `<neo-progress>` bar for loading workflows.
 - [ ] **Modal Component**: Standardize the Preview Modal into a reusable `<neo-modal>`.
 - [ ] **Accordion**: Create a `<neo-accordion>` for the sidebar block categories.
@@ -51,7 +51,6 @@
 - [ ] **Favicon**: Add a pixel-art or blocky favicon to the HTML head.
 - [ ] **Page Title**: Update the `document.title` dynamically based on the open file name.
 - [ ] **File Drop**: Allow dragging a `.snapf` file from the OS desktop directly onto the canvas.
-- [ ] **Export Image**: Use a library (like html2canvas) to "Screenshot" the flow.
 - [ ] **Description Field**: Add a metadata field for "Description" in the `.snapf` file.
 - [ ] **Version Control**: Add a version number to the `.snapf` metadata.
 - [ ] **Welcome Screen**: Check if `localStorage` is empty and show a "Welcome Tour".
