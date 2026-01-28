@@ -4,13 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Snapflw - Snapflows</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../web/style.css">
+    <script src="../web/components.js"></script>
     <script src="loadflow.js"></script>
 </head>
 
 <body>
     <h1>Snapflw - Snapflows</h1>
-    <div id="action_bar">
-        <neo-button variant="primary">New snapflow</neo-button>
+    <div id="centered"
+        style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 20px;">
+        <neo-button variant="primary" href="mainedit.html">New snapflow</neo-button>
         <neo-button variant="secondary" onclick="loadFlowFromSNAPF()">Import snapflow</neo-button>
         <neo-button variant="tertiary">Create block</neo-button>
     </div>
