@@ -7,7 +7,6 @@ class NeoButton extends HTMLElement {
     connectedCallback() {
         const variant = this.getAttribute('variant') || 'primary';
 
-        // Map variants to CSS variables
         let bgColor = 'var(--card-bg)';
         if (variant === 'primary') bgColor = 'var(--accent-2)';
         if (variant === 'secondary') bgColor = 'var(--accent-1)';
@@ -54,10 +53,8 @@ class NeoCard extends HTMLElement {
     connectedCallback() {
         let width = this.getAttribute('width');
 
-        // Handle width attribute
         let hostStyle = '';
         if (width) {
-            // If unitless number, add px
             if (!isNaN(width)) {
                 width = `${width}px`;
             }
@@ -262,7 +259,7 @@ class NeoSlider extends HTMLElement {
     }
 }
 
-
+/* Segmented Button ------------------------------------------------------------ */
 class NeoSegment extends HTMLElement {
     constructor() {
         super();
@@ -322,6 +319,8 @@ class NeoSegment extends HTMLElement {
         });
     }
 }
+
+/* EOF - Segmented button ----------------------------------------------------------- */
 
 customElements.define('neo-button', NeoButton);
 class NeoSelect extends HTMLElement {
@@ -439,4 +438,77 @@ customElements.define('neo-input', NeoInput);
 customElements.define('neo-badge', NeoBadge);
 customElements.define('neo-scroller', NeoScroller);
 customElements.define('neo-slider', NeoSlider);
+class NeoDate extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+    connectedCallback() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    width: 100%;
+                }
+                input {
+                    display: block;
+                    width: 100%;
+                    padding: 12px;
+                    font-family: 'Space Grotesk', sans-serif;
+                    font-size: 1rem;
+                    border: var(--border-width, 3px) solid black;
+                    background: white;
+                    box-shadow: 4px 4px 0px 0px black;
+                    outline: none;
+                    transition: box-shadow 0.2s;
+                    color: black;
+                }
+                input:focus {
+                    box-shadow: 6px 6px 0px 0px black;
+                }
+            </style>
+            <input type="datetime-local">
+        `;
+    }
+}
+
+customElements.define('neo-date', NeoDate);
+
+class NeoTime extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+    connectedCallback() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    width: 100%;
+                }
+                input {
+                    display: block;
+                    width: 100%;
+                    padding: 12px;
+                    font-family: 'Space Grotesk', sans-serif;
+                    font-size: 1rem;
+                    border: var(--border-width, 3px) solid black;
+                    background: white;
+                    box-shadow: 4px 4px 0px 0px black;
+                    outline: none;
+                    transition: box-shadow 0.2s;
+                    color: black;
+                }
+                input:focus {
+                    box-shadow: 6px 6px 0px 0px black;
+                }
+            </style>
+            <input type="time">
+        `;
+    }
+}
+
+customElements.define('neo-time', NeoTime);
 customElements.define('neo-segment', NeoSegment);

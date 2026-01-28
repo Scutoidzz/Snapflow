@@ -11,6 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global mouseup for finishing connection drags
     document.addEventListener('mouseup', handleGlobalMouseUp);
     document.addEventListener('mousemove', handleGlobalMouseMove);
+
+    // Check for pending flow open
+    const pendingContent = localStorage.getItem('pending_load_flow');
+    if (pendingContent) {
+        if (window.loadFlowFromContent) {
+            window.loadFlowFromContent(pendingContent);
+        }
+        // Clear it so it doesn't reload on refresh (optional, but good practice usually, 
+        // though for an editor maybe we want it to persist? User request implies "Show past automations" 
+        // which we did, this is just the "Open" action)
+        localStorage.removeItem('pending_load_flow');
+    }
 });
 
 function initDragAndDrop() {
@@ -308,11 +320,23 @@ function customRightClickMenu(e, nodeWrapper) {
         menu.remove();
 
         const label = nodeWrapper.querySelector('neo-button').getAttribute('data-label') || '';
-        if (label.includes('AI') || label.includes('API')) {
-            // Show Custom AI Menu
-            const customMenu = customizeApiMenu();
+        let customMenu = null;
 
-            // Wrap in a modal-like container
+        if (label.includes('AI') || label.includes('API')) {
+            customMenu = customizeApiMenu();
+        } else if (label.includes('Time') || label.includes('Schedule')) {
+            customMenu = customizeTimeDate();
+        } else if (label.includes('Notification')) {
+            customMenu = customizeNotification();
+        } else if (label.includes('File') || label.includes('CRUD')) {
+            customMenu = customizeFile();
+        } else if (label.includes('Battery')) {
+            customMenu = customizeBattery();
+        } else if (label.includes('Terminal')) {
+            customMenu = terminalCommand();
+        }
+
+        if (customMenu) {
             const modalOverlay = document.createElement('div');
             Object.assign(modalOverlay.style, {
                 position: 'fixed',
@@ -324,7 +348,6 @@ function customRightClickMenu(e, nodeWrapper) {
                 zIndex: '2000'
             });
 
-            // Add close functionality
             modalOverlay.onclick = (e) => {
                 if (e.target === modalOverlay) modalOverlay.remove();
             };

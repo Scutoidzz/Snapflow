@@ -53,12 +53,6 @@ body {
     margin: 4rem auto;
 }
 
-
-/* Specific Element Styling */
-
-
-/* Specific Element Styling */
-
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -394,6 +388,7 @@ footer {
     margin-top: 1rem;
     margin-bottom: 0.5rem;
 }
+
 /* Context Menu */
 .right-click-menu {
     position: absolute;
