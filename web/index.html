@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snapflw</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="components.js" defer></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Snapflw</div>
+        <div class="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="editor.html" class="nav-link">Editor</a>
+            <a href="#" class="nav-link">Download</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div id="intro">
+            <h1>Easy automation</h1>
+            <div id="call_to_action">
+                <a href="editor.html" style="text-decoration: none;">
+                    <neo-button variant="primary">Enter the web editor</neo-button>
+                </a>
+                <neo-button variant="secondary">Download the client</neo-button>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <neo-card>
+            <h2 class="text-center mb-2" style="font-size: 2.5rem; text-transform: uppercase;">Works with everything you
+                do</h2>
+            <div style="margin-top: 2rem; width: 100%;">
+                <neo-scroller speed="40s">
+                    <!-- Set 1 -->
+                    <neo-badge variant="secondary"><img src="assets/openweather.svg" height="24"
+                            alt="OpenWeather"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/hackclub.svg" height="24"
+                            alt="Hack Club"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/calendar.svg" height="24"
+                            alt="Google Calendar"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/chatgpt.svg" height="24" alt="ChatGPT"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/linear.svg" height="24" alt="Linear"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/vercel.svg" height="24" alt="Vercel"></neo-badge>
+                    <!-- Set 2 -->
+                    <neo-badge variant="secondary"><img src="assets/openweather.svg" height="24"
+                            alt="OpenWeather"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/hackclub.svg" height="24"
+                            alt="Hack Club"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/calendar.svg" height="24"
+                            alt="Google Calendar"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/chatgpt.svg" height="24" alt="ChatGPT"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/notion.svg" height="24" alt="Notion"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/vercel.svg" height="24" alt="Vercel"></neo-badge>
+                    <!-- Set 3 -->
+                    <neo-badge variant="secondary"><img src="assets/openweather.svg" height="24"
+                            alt="OpenWeather"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/hackclub.svg" height="24"
+                            alt="Hack Club"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/calendar.svg" height="24"
+                            alt="Google Calendar"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/chatgpt.svg" height="24" alt="ChatGPT"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/notion.svg" height="24" alt="Notion"></neo-badge>
+                    <neo-badge variant="secondary"><img src="assets/vercel.svg" height="24" alt="Vercel"></neo-badge>
+                </neo-scroller>
+            </div>
+        </neo-card>
+    </section>
+
+    <div class="split-section">
+        <div class="split-content">
+            <neo-card>
+                <h1>Use it everywhere</h1>
+                <ul style="padding-left: 1.5rem; font-size: 1.1rem; line-height: 1.8;">
+                    <li><strong>Share:</strong> Just send your shortcut file to anyone.</li>
+                    <li><strong>Run:</strong> just open it in the client.</li>
+                </ul>
+            </neo-card>
+        </div>
+        <div class="split-image">
+            <img src="assets/snapf.png" alt="Snapfile illustration" class="snapf-image" width="300">
+        </div>
+    </div>
+
+    <div class="section-grid">
+        <neo-card>
+            <h1>Customizable</h1>
+            <p>Use custom APIs and terminal commands to create a snapflow that fits your exact needs.</p>
+            <div style="margin-top: 1.5rem;">
+                <neo-button variant="primary">Read Docs</neo-button>
+            </div>
+        </neo-card>
+
+        <neo-card>
+            <h1>Free Forever</h1>
+            <p>Completely free to use for individuals. Open source and community driven.</p>
+            <div style="margin-top: 1.5rem;">
+                <neo-button variant="accent">Get Started</neo-button>
+            </div>
+        </neo-card>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>Snapflw</h2>
+                <p>Automation for everyone.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Download</a></li>
+                        <li><a href="#">Editor</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>

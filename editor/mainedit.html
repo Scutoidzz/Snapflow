@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snapflw - Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../web/style.css">
+</head>
+
+<body>
+    <script src="../web/components.js"></script>
+
+    <div class="editor-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header" style="flex-direction: column; gap: 1rem; align-items: flex-start;">
+                <h2>Blocks</h2>
+                <neo-segment options="Triggers, Actions"></neo-segment>
+            </div>
+
+            <div style="padding: 4rem; border-bottom: var(--border-width) solid black;">
+                <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                    <neo-input placeholder="Search blocks..."></neo-input>
+                    <neo-button variant="primary">Search</neo-button>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Trigger 1">Trigger
+                    1</neo-button>
+                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Trigger 2">Trigger
+                    2</neo-button>
+                <neo-button draggable="true" style="width: 100%;" data-type="trigger" data-label="Trigger 3">Trigger
+                    3</neo-button>
+                <neo-button draggable="true" style="width: 100%;" data-type="action" variant="secondary"
+                    data-label="Action 1">Action 1</neo-button>
+                <neo-button draggable="true" style="width: 100%;" data-type="action" variant="secondary"
+                    data-label="Action 2">Connect to AI </neo-button>
+                <neo-button draggable="true" style="width: 100%;" data-type="action" variant="secondary"
+                    data-label="Action 3">Action 3</neo-button>
+            </div>
+        </aside>
+        <div class="workspace">
+            <div class="workspace-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div>
+                    <h1 style="margin: 0;">Snapflw Editor</h1>
+                    <p style="margin: 0.5rem 0 0 0;">Drag blocks here to start building.</p>
+                </div>
+                <div class="file-actions" style="display: flex; gap: 0.5rem;">
+                    <neo-button variant="primary" onclick="saveFlowToSNAPF()">Download</neo-button>
+                </div>
+            </div>
+            <!-- Converted canvas to div for DOM-based drag and drop -->
+            <div id="dragboard"
+                style="position: relative; width: 100%; height: 75vh; border: 3px dashed #ccc; overflow: hidden;">
+                <svg id="connections-layer"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: visible;"></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal"
+        style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+        <div
+            style="background: white; border: 3px solid black; box-shadow: 8px 8px 0 black; max-width: 600px; width: 90%; max-height: 80vh; overflow: auto; padding: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="margin: 0;">Preview .snapf</h2>
+                <neo-button variant="tertiary" onclick="closePreviewModal()">✕ Close</neo-button>
+            </div>
+            <pre id="preview-content"
+                style="background: #f5f5f5; padding: 1rem; border: 2px solid #ccc; overflow-x: auto; font-family: 'Space Grotesk', monospace; white-space: pre-wrap;"></pre>
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                <neo-button variant="primary" onclick="copyPreviewContent()">📋 Copy</neo-button>
+                <neo-button variant="secondary" onclick="saveFlowToSNAPF()">💾 Download</neo-button>
+            </div>
+        </div>
+    </div>
+
+    <script src="snapflw.js"></script>
+    <script src="saveflow.js"></script>
+    <script src="loadflow.js"></script>
+    <script>
+        // Preview modal functions
+        function previewAndShowSnapf() {
+            const content = previewSnapf('Preview');
+            document.getElementById('preview-content').textContent = content;
+            document.getElementById('preview-modal').style.display = 'flex';
+        }
+
+        function closePreviewModal() {
+            document.getElementById('preview-modal').style.display = 'none';
+        }
+
+        function copyPreviewContent() {
+            const content = document.getElementById('preview-content').textContent;
+            navigator.clipboard.writeText(content).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+
+        // Close modal on background click
+        document.getElementById('preview-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('preview-modal')) {
+                closePreviewModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
