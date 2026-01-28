@@ -28,19 +28,23 @@ function initDragAndDrop() {
 }
 
 function setupDraggable(el) {
-    el.draggable = true;
+    el.setAttribute('draggable', 'true');
     el.addEventListener('dragstart', handleDragStart);
 }
 
 function handleDragStart(e) {
-    const isSidebar = e.target.closest('.sidebar-content') !== null;
-    let target = e.target;
+    // Use currentTarget to ensure we get the actual draggable element (wrapper or button)
+    // regardless of which child element was clicked.
+    let target = e.currentTarget;
+    const isSidebar = target.closest('.sidebar-content') !== null;
 
-    // If dragging a wrapper, get the internal button for ID/Type
+    // If dragging a wrapper, get the internal button for ID/Type data
     let noteBtn = target;
     if (target.classList.contains('node-wrapper')) {
         noteBtn = target.querySelector('neo-button');
     }
+
+    if (!noteBtn) return;
 
     // Identify the element being dragged for offset calculation
     const rect = target.getBoundingClientRect();
@@ -138,6 +142,11 @@ window.createNodeWrapper = function (type, label, variant, x, y, existingId = nu
 
     // Make wrapper draggable
     setupDraggable(wrapper);
+
+    // Context menu
+    wrapper.addEventListener('contextmenu', (e) => {
+        customRightClickMenu(e, wrapper);
+    });
 
     // Ports
     const portStyle = {
@@ -278,6 +287,106 @@ function handleGlobalMouseUp(e) {
     currentConnectionSource = null;
 }
 
+function customRightClickMenu(e, nodeWrapper) {
+    e.preventDefault();
+
+    // Remove existing menus
+    const existing = document.querySelector('.right-click-menu');
+    if (existing) existing.remove();
+
+    const menu = document.createElement('div');
+    menu.classList.add('right-click-menu');
+    menu.style.left = `${e.clientX}px`;
+    menu.style.top = `${e.clientY}px`;
+
+    // Customize Option
+    const customizeOption = document.createElement('div');
+    customizeOption.className = 'menu-item';
+    customizeOption.textContent = 'Customize';
+    customizeOption.onclick = (evt) => {
+        evt.stopPropagation();
+        menu.remove();
+
+        const label = nodeWrapper.querySelector('neo-button').getAttribute('data-label') || '';
+        if (label.includes('AI') || label.includes('API')) {
+            // Show Custom AI Menu
+            const customMenu = customizeApiMenu();
+
+            // Wrap in a modal-like container
+            const modalOverlay = document.createElement('div');
+            Object.assign(modalOverlay.style, {
+                position: 'fixed',
+                top: '0', left: '0', right: '0', bottom: '0',
+                background: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: '2000'
+            });
+
+            // Add close functionality
+            modalOverlay.onclick = (e) => {
+                if (e.target === modalOverlay) modalOverlay.remove();
+            };
+
+            modalOverlay.appendChild(customMenu);
+            document.body.appendChild(modalOverlay);
+        } else {
+            alert('Customize options coming soon for ' + nodeWrapper.querySelector('neo-button').textContent);
+        }
+    };
+
+    // Delete Option
+    const deleteOption = document.createElement('div');
+    deleteOption.className = 'menu-item';
+    deleteOption.textContent = 'Delete';
+    deleteOption.onclick = (evt) => {
+        evt.stopPropagation();
+        if (nodeWrapper) {
+            // Remove connections associated with this node
+            const nodeId = nodeWrapper.querySelector('neo-button').id;
+            window.snapflowConnections = window.snapflowConnections.filter(c => c.from !== nodeId && c.to !== nodeId);
+
+            nodeWrapper.remove();
+            drawConnections();
+        }
+        menu.remove();
+    };
+
+    menu.appendChild(customizeOption);
+    menu.appendChild(deleteOption);
+    document.body.appendChild(menu);
+
+    // Close menu on click anywhere else
+    const closeMenu = () => {
+        menu.remove();
+        document.removeEventListener('click', closeMenu);
+    };
+
+    // Use setTimeout to avoid immediate trigger by the current click if it bubbled (though contextmenu usually doesn't trigger click immediately in same way, but safe practice)
+    setTimeout(() => {
+        document.addEventListener('click', closeMenu);
+    }, 0);
+}
+
+function focusOnClick() {
+    const node = document.getElementById('dragboard').querySelector('.node-wrapper');
+    if (node) {
+        node.classList.add('focus');
+    }
+    focusedNode = node;
+    return focusedNode;
+}
+
+function handleDeletionKey() {
+    focusOnClick();
+    const node = focusedNode;
+    node.addEventListener('keydown', (e) => {
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+            node.remove();
+        }
+    });
+}
 
 /**
  * Draw all connections using SVG

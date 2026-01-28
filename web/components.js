@@ -324,6 +324,116 @@ class NeoSegment extends HTMLElement {
 }
 
 customElements.define('neo-button', NeoButton);
+class NeoSelect extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+    connectedCallback() {
+        const options = (this.getAttribute('options') || '').split(',');
+        const placeholder = this.getAttribute('placeholder') || 'Select...';
+
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    font-family: 'Space Grotesk', sans-serif;
+                    position: relative;
+                }
+                .select-trigger {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background-color: white;
+                    border: var(--border-width, 3px) solid black;
+                    padding: 12px;
+                    cursor: pointer;
+                    box-shadow: 4px 4px 0px 0px black;
+                    font-weight: bold;
+                    transition: all 0.2s;
+                    user-select: none;
+                }
+                .select-trigger:hover {
+                    background-color: #eee;
+                }
+                .select-trigger:active {
+                    transform: translate(2px, 2px);
+                    box-shadow: 2px 2px 0px 0px black;
+                }
+                .chevron {
+                    width: 0; 
+                    height: 0; 
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid black;
+                    margin-left: 10px;
+                }
+                .options-container {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    width: 100%;
+                    background: white;
+                    border: var(--border-width, 3px) solid black;
+                    border-top: none;
+                    box-shadow: 4px 4px 0px 0px black;
+                    z-index: 100;
+                    margin-top: 2px;
+                }
+                .options-container.open {
+                    display: block;
+                }
+                .option {
+                    padding: 10px 12px;
+                    cursor: pointer;
+                    transition: background 0.2s;
+                    border-bottom: 2px solid #eee;
+                }
+                .option:last-child {
+                    border-bottom: none;
+                }
+                .option:hover {
+                    background-color: var(--accent-3, #ffe66d);
+                }
+            </style>
+            <div class="select-trigger" id="trigger">
+                <span id="label">${placeholder}</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="options-container" id="options">
+                ${options.map(opt => `<div class="option" data-value="${opt.trim()}">${opt.trim()}</div>`).join('')}
+            </div>
+        `;
+
+        const trigger = this.shadowRoot.getElementById('trigger');
+        const optionsContainer = this.shadowRoot.getElementById('options');
+        const label = this.shadowRoot.getElementById('label');
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            optionsContainer.classList.toggle('open');
+        });
+
+        this.shadowRoot.querySelectorAll('.option').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const value = e.target.dataset.value;
+                label.textContent = value;
+                optionsContainer.classList.remove('open');
+                this.dispatchEvent(new CustomEvent('change', { detail: value }));
+            });
+        });
+
+        // Close on click outside
+        document.addEventListener('click', () => {
+            optionsContainer.classList.remove('open');
+        });
+    }
+}
+
+customElements.define('neo-select', NeoSelect);
 customElements.define('neo-card', NeoCard);
 customElements.define('neo-input', NeoInput);
 customElements.define('neo-badge', NeoBadge);
