@@ -339,7 +339,8 @@ function drawConnections() {
         path.setAttribute('fill', 'none');
         path.setAttribute('stroke', 'black');
         path.setAttribute('stroke-width', '4');
-        path.setAttribute('marker-end', 'url(#arrowhead)');
+        // path.setAttribute('marker-end', 'url(#arrowhead)');
+        // Got rid of. hated the arrows
 
         svg.appendChild(path);
     });
